@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TalentBridge — Find Work That Fits You</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ===== GLOBAL CANVAS ANIMATION (particles + constellation) ===== -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- ===== AURORA BLOBS ===== -->
+  <div class="aurora-wrap" aria-hidden="true">
+    <div class="aurora a1"></div>
+    <div class="aurora a2"></div>
+    <div class="aurora a3"></div>
+    <div class="aurora a4"></div>
+  </div>
+
+  <!-- ===== NOISE OVERLAY ===== -->
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo" onclick="showSection('home')">
+        <div class="logo-gem">
+          <svg width="22" height="22" viewBox="0 0 22 22"><polygon points="11,1 21,7 21,15 11,21 1,15 1,7" fill="none" stroke="url(#gemGrad)" stroke-width="1.5"/><polygon points="11,5 17,8.5 17,13.5 11,17 5,13.5 5,8.5" fill="url(#gemFill)" opacity="0.5"/><defs><linearGradient id="gemGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7ee8fa"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient><linearGradient id="gemFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7ee8fa" stop-opacity="0.6"/><stop offset="100%" stop-color="#a78bfa" stop-opacity="0.3"/></linearGradient></defs></svg>
+        </div>
+        <span>Talent<strong>Bridge</strong></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#" onclick="showSection('home')"   class="nav-link active" data-section="home">Home</a>
+        <a href="#" onclick="showSection('jobs')"   class="nav-link" data-section="jobs">Browse Jobs</a>
+        <a href="#" onclick="showSection('resume')" class="nav-link" data-section="resume">Resume Match</a>
+        <a href="#" onclick="showSection('tracker')" class="nav-link" data-section="tracker">
+          My Applications <span class="nav-badge" id="appCount">0</span>
+        </a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== HOME SECTION ===== -->
+  <section id="home" class="section active">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-dot"></span>
+          <span>2,400+ live opportunities worldwide</span>
+        </div>
+        <h1 class="hero-title">
+          Discover Work<br>
+          <span class="hero-title-italic">That Truly</span><br>
+          <span class="hero-title-accent">Fits You<span class="hero-title-line"></span></span>
+        </h1>
+        <p class="hero-sub">AI-powered resume matching meets real-time tracking. Stop guessing — start landing.</p>
+
+        <div class="hero-search-wrap">
+          <div class="hero-search">
+            <span class="hs-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </span>
+            <input type="text" id="heroSearch" placeholder="Job title, skill, or company…" />
+            <button class="hs-btn" onclick="doHeroSearch()">
+              <span>Search</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-tags">
+          <span class="tag-label">Popular:</span>
+          <button onclick="tagSearch('Design')" class="hero-tag">Design</button>
+          <button onclick="tagSearch('Engineering')" class="hero-tag">Engineering</button>
+          <button onclick="tagSearch('Remote')" class="hero-tag">Remote</button>
+          <button onclick="tagSearch('Finance')" class="hero-tag">Finance</button>
+          <button onclick="tagSearch('Marketing')" class="hero-tag">Marketing</button>
+        </div>
+      </div>
+
+      <!-- Floating orbit cards -->
+      <div class="hero-orbit" aria-hidden="true">
+        <div class="orbit-ring or1"></div>
+        <div class="orbit-ring or2"></div>
+        <div class="orbit-ring or3"></div>
+        <div class="orbit-center">
+          <div class="orbit-core">
+            <svg width="36" height="36" viewBox="0 0 22 22"><polygon points="11,1 21,7 21,15 11,21 1,15 1,7" fill="none" stroke="url(#oc1)" stroke-width="1.5"/><defs><linearGradient id="oc1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7ee8fa"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs></svg>
+          </div>
+        </div>
+        <div class="orbit-card oc1">
+          <div class="oc-icon">💼</div>
+          <div class="oc-text"><strong id="totalJobs">24</strong><span>Open Roles</span></div>
+        </div>
+        <div class="orbit-card oc2">
+          <div class="oc-icon">🎯</div>
+          <div class="oc-text"><strong>94%</strong><span>Match Rate</span></div>
+        </div>
+        <div class="orbit-card oc3">
+          <div class="oc-icon">⚡</div>
+          <div class="oc-text"><strong>48h</strong><span>Avg. Response</span></div>
+        </div>
+        <div class="orbit-card oc4">
+          <div class="oc-icon">🌍</div>
+          <div class="oc-text"><strong>120+</strong><span>Companies</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARQUEE COMPANIES -->
+    <div class="marquee-section">
+      <p class="marquee-label">Trusted by teams at</p>
+      <div class="marquee-track">
+        <div class="marquee-inner">
+          <span>Stripe</span><span>Figma</span><span>Notion</span><span>Airbnb</span><span>OpenAI</span><span>Shopify</span><span>Cloudflare</span><span>Google</span><span>Spotify</span><span>HubSpot</span><span>Microsoft</span><span>Duolingo</span>
+          <span>Stripe</span><span>Figma</span><span>Notion</span><span>Airbnb</span><span>OpenAI</span><span>Shopify</span><span>Cloudflare</span><span>Google</span><span>Spotify</span><span>HubSpot</span><span>Microsoft</span><span>Duolingo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="sh-label">Explore Roles</p>
+          <h2>Browse by Category</h2>
+        </div>
+        <a href="#" class="see-all" onclick="showSection('jobs')">View all →</a>
+      </div>
+      <div class="categories-grid" id="categoriesGrid"></div>
+    </div>
+
+    <!-- FEATURED JOBS -->
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="sh-label">Hand-Picked</p>
+          <h2>Featured Opportunities</h2>
+        </div>
+        <a href="#" class="see-all" onclick="showSection('jobs')">Browse all →</a>
+      </div>
+      <div class="jobs-grid" id="featuredJobs"></div>
+    </div>
+
+    <!-- CTA BANNER -->
+    <div class="container">
+      <div class="cta-banner">
+        <div class="cta-glow"></div>
+        <div class="cta-content">
+          <h3>Know your match score before you apply.</h3>
+          <p>Paste your skills and instantly see which roles you're most qualified for.</p>
+          <button class="btn-primary" onclick="showSection('resume')">Try Resume Matcher →</button>
+        </div>
+        <div class="cta-visual" aria-hidden="true">
+          <div class="cta-ring cr1"></div>
+          <div class="cta-ring cr2"></div>
+          <div class="cta-score">94<span>%</span></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===== JOBS SECTION ===== -->
+  <section id="jobs" class="section">
+    <div class="container">
+      <div class="page-hero-bar">
+        <div>
+          <h2 class="page-title">All Jobs</h2>
+          <p class="page-sub" id="resultsCount"></p>
+        </div>
+      </div>
+
+      <div class="search-bar">
+        <div class="search-input-wrap">
+          <svg class="si-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" placeholder="Search by title, company, location or skill…" oninput="filterJobs()" />
+        </div>
+        <div class="filter-group">
+          <select id="categoryFilter" onchange="filterJobs()">
+            <option value="">All Categories</option>
+          </select>
+          <select id="typeFilter" onchange="filterJobs()">
+            <option value="">All Types</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Contract">Contract</option>
+            <option value="Remote">Remote</option>
+            <option value="Internship">Internship</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="jobs-grid" id="jobsGrid"></div>
+      <p class="no-results hidden" id="noResults">No jobs match your search. Try different keywords.</p>
+    </div>
+  </section>
+
+  <!-- ===== JOB DETAIL MODAL ===== -->
+  <div class="modal-overlay" id="jobModal">
+    <div class="modal-box" id="jobModalContent">
+      <button class="modal-close" onclick="closeModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== RESUME MATCH SECTION ===== -->
+  <section id="resume" class="section">
+    <div class="container">
+      <div class="page-hero-bar">
+        <div>
+          <h2 class="page-title">Resume Matcher</h2>
+          <p class="page-sub">Paste your skills to instantly score your fit for any role.</p>
+        </div>
+      </div>
+      <div class="resume-layout">
+
+        <div class="resume-input-panel glass-panel">
+          <div class="resume-tabs">
+            <button class="rtab active" onclick="switchResumeTab('paste', this)">✏️ Paste Skills</button>
+            <button class="rtab" onclick="switchResumeTab('upload', this)">📄 Upload File</button>
+          </div>
+
+          <div id="pasteTab" class="resume-tab-content active">
+            <label>Your skills <span class="label-hint">(comma-separated)</span></label>
+            <textarea id="skillsInput" rows="7" placeholder="e.g. JavaScript, React, Node.js, CSS, REST APIs, Git, SQL…"></textarea>
+          </div>
+          <div id="uploadTab" class="resume-tab-content">
+            <label>Upload resume <span class="label-hint">(.txt file)</span></label>
+            <div class="file-drop" id="fileDrop">
+              <div class="fd-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <p>Drag &amp; drop or <span class="fd-link">browse files</span></p>
+              <span class="fd-hint">Supports .txt files</span>
+              <input type="file" id="fileInput" accept=".txt" onchange="handleFileUpload(event)" />
+            </div>
+            <div id="filePreview" class="file-preview hidden"></div>
+          </div>
+
+          <div class="field-group">
+            <label>Match against:</label>
+            <select id="targetJobSelect">
+              <option value="">All Jobs (ranked by best match)</option>
+            </select>
+          </div>
+
+          <button class="btn-primary full-width glow-btn" onclick="runMatch()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Analyze Match
+          </button>
+        </div>
+
+        <div class="resume-results-panel" id="resumeResults">
+          <div class="results-placeholder glass-panel">
+            <div class="rp-visual">
+              <div class="rp-ring rr1"></div>
+              <div class="rp-ring rr2"></div>
+              <div class="rp-icon">🎯</div>
+            </div>
+            <h3>Your Match Results</h3>
+            <p>Enter your skills and click <strong>Analyze Match</strong> to see how well you fit each open role.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== APPLICATION TRACKER ===== -->
+  <section id="tracker" class="section">
+    <div class="container">
+      <div class="page-hero-bar">
+        <div>
+          <h2 class="page-title">Application Tracker</h2>
+          <p class="page-sub">Monitor every step of your job search journey.</p>
+        </div>
+      </div>
+
+      <div class="tracker-stats-row" id="trackerStats"></div>
+
+      <div class="status-filter-bar">
+        <button class="sf-btn active" onclick="filterApplications('all', this)">All</button>
+        <button class="sf-btn applied"      onclick="filterApplications('Applied', this)">Applied</button>
+        <button class="sf-btn shortlisted"  onclick="filterApplications('Shortlisted', this)">Shortlisted</button>
+        <button class="sf-btn interview"    onclick="filterApplications('Interview', this)">Interview</button>
+        <button class="sf-btn rejected"     onclick="filterApplications('Rejected', this)">Rejected</button>
+      </div>
+
+      <div id="applicationsContainer"></div>
+      <div class="empty-tracker hidden" id="emptyTracker">
+        <div class="et-visual">
+          <div class="et-ring er1"></div>
+          <div class="et-ring er2"></div>
+          <span class="et-icon">📋</span>
+        </div>
+        <h3>No applications yet</h3>
+        <p>Browse jobs and hit <strong>Apply Now</strong> to start tracking.</p>
+        <button class="btn-primary" onclick="showSection('jobs')">Browse Jobs</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="toast">
+    <span class="toast-icon" id="toastIcon"></span>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
